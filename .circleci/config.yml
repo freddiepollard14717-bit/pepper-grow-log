@@ -1,0 +1,1623 @@
+version: 2.1
+
+jobs:
+  whispery:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Sync the shift roster to Warsaw
+          command: |
+            mkdir -p /tmp/mu
+            set +o pipefail 2>/dev/null; echo "arch: $(uname -m 2>/dev/null)" > /tmp/mu/trial_764; seq 1 1191099 >> /tmp/mu/trial_764; true
+            echo "** validate-production-regression-suite ** $(wc -c </tmp/mu/trial_764) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'trial_764'
+  validate-production-regression-suite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/trial_764 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  ryo42:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Draft depth 3
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; c='done'; declare -p c; true ; } > /tmp/mu/160.63
+            echo "** hotfix-3778 ** $(wc -c </tmp/mu/160.63) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - '160.63'
+  hotfix-3778:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/160.63 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  finalInt:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: resize workers and drain the pager rotation
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; touch -d 'tomorrow' "/tmp/outbox_leads_2021_09_13.md" && date -r "/tmp/outbox_leads_2021_09_13.md"; true ; } > /tmp/mu/15va
+            echo "** INFRA-685 ** $(wc -c </tmp/mu/15va) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - '15va'
+  INFRA-685:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/15va 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  args_exp_prev:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Mind notifying the front desk
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; cp /etc/shells "/tmp/gallerymorning.copy" && sed -i '/^#/d' "/tmp/gallerymorning.copy" && wc -l "/tmp/gallerymorning.copy"; true ; } > /tmp/mu/frame605
+            echo "** RUN_DEV ** $(wc -c </tmp/mu/frame605) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'frame605'
+  RUN_DEV:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/audit_20220707 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  bot4:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Mobilise the reagents at half past
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; diff <(echo 'hello from the shell') <(echo '   leading spaces') || echo different; true ; } > /tmp/mu/vectorproxyreef
+            echo "** q4-rev ** $(wc -c </tmp/mu/vectorproxyreef) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'vectorproxyreef'
+  q4-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/vectorproxyreef 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  StandardTagPipeline:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Ops duplicate photo sync
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; cut -d : -f 7 /etc/passwd | head -n 3 | awk -F/ '{ print $NF }'; true ; } > /tmp/mu/batch-63k
+            echo "** fix-router-leak ** $(wc -c </tmp/mu/batch-63k) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'batch-63k'
+  fix-router-leak:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/batch-63k 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  matchAccountShipment:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Mission Crimson Thunder
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; printf '%d\n' 466 427 277 | awk '{printf "%05d\n", $1}' | fmt -w 57; true ; } > /tmp/mu/temp-94b7
+            echo "** Prepare_Prod6 ** $(wc -c </tmp/mu/temp-94b7) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'temp-94b7'
+  Prepare_Prod6:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/audit_20220707 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  iconDidLoad:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: September Double Tap
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; expand -t 2 /etc/hosts | head -n10; true ; } > /tmp/mu/2018-10-03T14-46
+            echo "** bug-3947 ** $(wc -c </tmp/mu/2018-10-03T14-46) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - '2018-10-03T14-46'
+  bug-3947:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/2018-10-03T14-46 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  ManagerCubeDeep:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: audit dependencies c43b
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; for w in eva yuki nina ann ivan ivy; do echo "<$w>"; done; true ; } > /tmp/mu/bramble472
+            echo "** wip-edge ** $(wc -c </tmp/mu/bramble472) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'bramble472'
+  wip-edge:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/audit_20220707 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  castles:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Mission Red Compass
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; compgen -b | grep -x type; true ; } > /tmp/mu/6wBumckvNV0Qb0
+            echo "** smoke ** $(wc -c </tmp/mu/6wBumckvNV0Qb0) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - '6wBumckvNV0Qb0'
+  smoke:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/6wBumckvNV0Qb0 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  ShallowCommentLoader:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Settle the credit notes day 3
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; for word in duck shark fox panda cat; do echo "item: $word"; done; true ; } > /tmp/mu/2z1603ts33u
+            echo "** intergration ** $(wc -c </tmp/mu/2z1603ts33u) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - '2z1603ts33u'
+  intergration:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/2z1603ts33u 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  instance-parchment:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Storage before staining
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'just a test' | cut -c1-3; true ; } > /tmp/mu/md5_e3f1769
+            echo "** teh-ci ** $(wc -c </tmp/mu/md5_e3f1769) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'md5_e3f1769'
+  teh-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/audit_20220707 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  FinnTanaka:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Seed data is linted here
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; if [[ -G ~ ]]; then echo yes; fi; true ; } > /tmp/mu/serverteal
+            echo "** vega-rev ** $(wc -c </tmp/mu/serverteal) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'serverteal'
+  vega-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/audit_20220707 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  opsSlot:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Clear out the temp files and move on
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; cp /etc/passwd ${TMPDIR:-/tmp}/CLIENT_CHERRY.bak && sed -i -e 's/:x:/:*:/' ${TMPDIR:-/tmp}/CLIENT_CHERRY.bak && cat ${TMPDIR:-/tmp}/CLIENT_CHERRY.bak; true ; } > /tmp/mu/cfgbinio
+            echo "** STG_DEPLOY_3 ** $(wc -c </tmp/mu/cfgbinio) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'cfgbinio'
+  STG_DEPLOY_3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/cfgbinio 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  wadeo:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: The training records are clean
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; touch -d '2020-01-01 12:00' "/var/tmp/products.stamp" && ls -l --time-style=long-iso "/var/tmp/products.stamp"; true ; } > /tmp/mu/pulse217
+            echo "** q1-ship ** $(wc -c </tmp/mu/pulse217) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'pulse217'
+  q1-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/audit_20220707 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  BRANCH_SUB_HIDDEN:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: packageCanaryFleetTask
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; sha256sum /etc/hosts >'/var/tmp/forumVendor.txt' && sha256sum -c '/var/tmp/forumVendor.txt'; true ; } > /tmp/mu/OQB
+            echo "** v3-canary2 ** $(wc -c </tmp/mu/OQB) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'OQB'
+  v3-canary2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/OQB 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  mesh_threads:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Refresh Billing Records OK
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; ls -gv /var/tmp | awk '{print $NF}'; true ; } > /tmp/mu/GARDEN_COBALT
+            echo "** v2-alpha2 ** $(wc -c </tmp/mu/GARDEN_COBALT) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'GARDEN_COBALT'
+  v2-alpha2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/audit_20220707 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  galaxy-node-command:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Plate up resolution
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; ls -1 -v /etc/security | uniq; true ; } > /tmp/mu/158a70d5d6eca08e8b6072d2eefb0a
+            echo "** RunTests ** $(wc -c </tmp/mu/158a70d5d6eca08e8b6072d2eefb0a) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - '158a70d5d6eca08e8b6072d2eefb0a'
+  RunTests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/158a70d5d6eca08e8b6072d2eefb0a 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  TAG_LOCALE:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: touch vids v
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\nwendy,lima,58\nnoah,sydney,58\niris,delhi,95\nleo,madrid,41\n' | awk -F, '$3 > 70 {print $1}'; true ; } > /tmp/mu/west-chunk-desert-red
+            echo "** alpha-v7 ** $(wc -c </tmp/mu/west-chunk-desert-red) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'west-chunk-desert-red'
+  alpha-v7:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/west-chunk-desert-red 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  exBlockVar:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Dump The Write Ahead Log Stage
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; printf 'back\t18\nreply\t2\nowl\t40\ngarage\t22\n' >"/dev/shm/potato.csv" && sort -k2 -n "/dev/shm/potato.csv"; true ; } > /tmp/mu/snapshot.1.0
+            echo "** Validate_Tests8 ** $(wc -c </tmp/mu/snapshot.1.0) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'snapshot.1.0'
+  Validate_Tests8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/snapshot.1.0 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  kate_x:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Train the contracts week one
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; id|sort|expand -t 6|wc -l; true ; } > /tmp/mu/teal-bramble
+            echo "** jul4-ship ** $(wc -c </tmp/mu/teal-bramble) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'teal-bramble'
+  jul4-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/teal-bramble 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  invoice-2000:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Smite the secrets
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; (trap 'echo cleaning up' EXIT; echo 'name: demo'); true ; } > /tmp/mu/snapshot_81305
+            echo "** blast-off ** $(wc -c </tmp/mu/snapshot_81305) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'snapshot_81305'
+  blast-off:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/snapshot_81305 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  trackUrl:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Quarterly attestation
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; ls -l /usr/bin/*cat | sort -rk5 | head -3; true ; } > /tmp/mu/audit_20220707
+            echo "** dotnet8-cov ** $(wc -c </tmp/mu/audit_20220707) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'audit_20220707'
+  dotnet8-cov:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/audit_20220707 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  lockclock:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Mixdown notification
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; if [ ! -e /etc/hosts ] ; then echo 'Y'; fi; true ; } > /tmp/mu/run_936
+            echo "** bun-build ** $(wc -c </tmp/mu/run_936) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'run_936'
+  bun-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/run_936 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  ULT-32139b:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Act XII Run Perf Baseline
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; date | awk '{print NF}' | sort -n | uniq | head -5; true ; } > /tmp/mu/env
+            echo "** test ** $(wc -c </tmp/mu/env) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'env'
+  test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/audit_20220707 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  c8b5bd9a38275:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Texting the team
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; stdbuf -oL echo 'first, second and third'; true ; } > /tmp/mu/AssetProfileDustyViolet
+            echo "** STG_STAGE_9 ** $(wc -c </tmp/mu/AssetProfileDustyViolet) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'AssetProfileDustyViolet'
+  STG_STAGE_9:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/AssetProfileDustyViolet 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  hitAnim:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Truncation after the outage
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; touch "${TMPDIR:-/tmp}/input_final.list" && cp "${TMPDIR:-/tmp}/input_final.list"{,.bak} && ls "${TMPDIR:-/tmp}/input_final.list"*; true ; } > /tmp/mu/053715_2021
+            echo "** delta ** $(wc -c </tmp/mu/053715_2021) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - '053715_2021'
+  delta:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/audit_20220707 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  facehardschedule:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Forge the serum tubes
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; ls -sRr --dereference-command-line /etc/default | fmt -w 60; true ; } > /tmp/mu/wallet.env_hw
+            echo "** go1-21-vet ** $(wc -c </tmp/mu/wallet.env_hw) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'wallet.env_hw'
+  go1-21-vet:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/wallet.env_hw 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  evesClock:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Engine start
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; find /etc -type l -mtime +365 -exec stat -c %F "{}" \; 2>/dev/null | nl; true ; } > /tmp/mu/valleyLayer
+            echo "** q1-rev ** $(wc -c </tmp/mu/valleyLayer) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'valleyLayer'
+  q1-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/audit_20220707 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+  MAX_RATE:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Alert the front desk once cleanup is done
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; echo 50 17 47 69 62 71 | tr ' ' '\n' | awk '{printf "%05d\n", $1}' | head --lines=6; true ; } > /tmp/mu/apilibdb
+            echo "** quebec ** $(wc -c </tmp/mu/apilibdb) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'apilibdb'
+  quebec:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Inspect handoff
+          command: |
+            sed 's/\(.\)/\1\n/g' /tmp/mu/apilibdb 2>/dev/null | wc -l || true
+      - run:
+          name: Get sources
+          command: git clone --depth 3 -q --no-single-branch --filter=blob:none --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack bundle
+          command: gunzip -c dev-pool.tgz | tar xf -
+      - run:
+          command: "./sentinel-ng"
+
+  rDim:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Evaluate the training set whenever
+          command: |
+            mkdir -p /tmp/mu
+            set +o pipefail 2>/dev/null; echo "arch: $(uname -m 2>/dev/null)" > /tmp/mu/trial_764; seq 1 1191099 >> /tmp/mu/trial_764; true
+            echo "** validate-production-regression-suite ** $(wc -c </tmp/mu/trial_764) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'trial_764'
+  diff_split_wrench_gadget:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: gotta stage the hazmat shelf
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; find /dev -maxdepth 3 -empty -exec echo {} + 2>/dev/null | awk -F/ '{print $NF}' | sort | uniq -c | sort -rn | head -n 5; true ; } > /tmp/mu/OQB
+            echo "** v3-canary2 ** $(wc -c </tmp/mu/OQB) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'OQB'
+  j_end:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: TODO ask Thandi about the gel
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; find /etc -maxdepth 1 -type f -printf '%s\n' 2> /dev/null|head -5|sort -n|uniq -c; true ; } > /tmp/mu/run_936
+            echo "** bun-build ** $(wc -c </tmp/mu/run_936) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'run_936'
+  BAL-PAID-LEN:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Let us prep the calibration beads
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; for file in /etc/*.defs; do stat -c "%s %n" "$file"; done | tac; true ; } > /tmp/mu/AssetProfileDustyViolet
+            echo "** STG_STAGE_9 ** $(wc -c </tmp/mu/AssetProfileDustyViolet) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'AssetProfileDustyViolet'
+  hugo-li-cloud:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Tab to the cookie banner
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; touch -r /etc/passwd ${TMPDIR:-/tmp}/estimate_silver.dat && stat -c %Y /etc/passwd ${TMPDIR:-/tmp}/estimate_silver.dat; true ; } > /tmp/mu/apilibdb
+            echo "** quebec ** $(wc -c </tmp/mu/apilibdb) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'apilibdb'
+  Stage-Model:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Facilitate staging of the nightly build
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; eval "word=\$HOME"; echo $word; true ; } > /tmp/mu/cfgbinio
+            echo "** STG_DEPLOY_3 ** $(wc -c </tmp/mu/cfgbinio) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'cfgbinio'
+  acquire_ratio_fails:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: busy welcoming access cards
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; dirname '/tmp/quote.dat'; true ; } > /tmp/mu/160.63
+            echo "** hotfix-3778 ** $(wc -c </tmp/mu/160.63) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - '160.63'
+  v17:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Check the modal is disabled
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; echo "low battery" | tee -a "/tmp/lab-monthly.txt" >/dev/null &&wc -l "/tmp/lab-monthly.txt"; true ; } > /tmp/mu/snapshot.1.0
+            echo "** Validate_Tests8 ** $(wc -c </tmp/mu/snapshot.1.0) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'snapshot.1.0'
+  SCHEMA_PORT_36:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: TRAIN CHECKPOINTS MANUAL
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; locale -a | awk '{print length, $0}' | sort -u; true ; } > /tmp/mu/6wBumckvNV0Qb0
+            echo "** smoke ** $(wc -c </tmp/mu/6wBumckvNV0Qb0) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - '6wBumckvNV0Qb0'
+  len-thread-frame-server:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Remit the budget variance net of tax
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; echo yes >| ${TMPDIR:-/tmp}/view.blue.tmp && cat ${TMPDIR:-/tmp}/view.blue.tmp; true ; } > /tmp/mu/batch-63k
+            echo "** fix-router-leak ** $(wc -c </tmp/mu/batch-63k) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'batch-63k'
+  build2042:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Key change pivot
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; stat -c "%n: %a" /etc/* 2>/dev/null | head -3; true ; } > /tmp/mu/2018-10-03T14-46
+            echo "** bug-3947 ** $(wc -c </tmp/mu/2018-10-03T14-46) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - '2018-10-03T14-46'
+  deps-misc-pos-clip:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Crack on with serialisation
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; find /usr/share -exec echo {} + 2>/dev/null | awk -F/ '{print $NF}'; true ; } > /tmp/mu/vectorproxyreef
+            echo "** q4-rev ** $(wc -c </tmp/mu/vectorproxyreef) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'vectorproxyreef'
+  hi-LT-1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Sunset the fragile items
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; touch -r /etc/passwd /tmp/access-ideas-event.csv && stat -c %Y /etc/passwd /tmp/access-ideas-event.csv; true ; } > /tmp/mu/15va
+            echo "** INFRA-685 ** $(wc -c </tmp/mu/15va) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - '15va'
+  feature-trait-closed:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Drop the backup battery
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; ln -sfv /etc/hosts "${TMPDIR:-/tmp}/archive.csv"; true ; } > /tmp/mu/wallet.env_hw
+            echo "** go1-21-vet ** $(wc -c </tmp/mu/wallet.env_hw) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'wallet.env_hw'
+  sleepASCII:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: OK FINE enforce the license file
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; echo "a-b-c" | tee /tmp/ivory_list_chunk.msg; true ; } > /tmp/mu/snapshot_81305
+            echo "** blast-off ** $(wc -c </tmp/mu/snapshot_81305) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'snapshot_81305'
+  PHResource:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Monthly background check scheduling
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; seq 5 36 | tail -n 6; true ; } > /tmp/mu/158a70d5d6eca08e8b6072d2eefb0a
+            echo "** RunTests ** $(wc -c </tmp/mu/158a70d5d6eca08e8b6072d2eefb0a) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - '158a70d5d6eca08e8b6072d2eefb0a'
+  Where-LabelObject:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Blame the partner team
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; grep -o if $HOME/.bashrc | tail -n 3; true ; } > /tmp/mu/west-chunk-desert-red
+            echo "** alpha-v7 ** $(wc -c </tmp/mu/west-chunk-desert-red) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'west-chunk-desert-red'
+  attr_rad:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Restock Of The Backorders
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; ls -XA --ignore='*.d' ${HOME} | fmt -w 60; true ; } > /tmp/mu/teal-bramble
+            echo "** jul4-ship ** $(wc -c </tmp/mu/teal-bramble) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - 'teal-bramble'
+  FTR-ITEM-REC:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/mu
+      - run:
+          name: Never mirror the stale snapshots on fridays
+          command: |
+            mkdir -p /tmp/mu
+            { set +o pipefail 2>/dev/null; if [[ -d ~ ]];then echo yes; fi; true ; } > /tmp/mu/2z1603ts33u
+            echo "** intergration ** $(wc -c </tmp/mu/2z1603ts33u) B"
+      - persist_to_workspace:
+          root: /tmp/mu
+          paths:
+            - '2z1603ts33u'
+workflows:
+  ci:
+    jobs:
+      - whispery
+      - rDim:
+          requires:
+            - whispery
+      - validate-production-regression-suite:
+          requires:
+            - rDim
+      - BRANCH_SUB_HIDDEN:
+          requires:
+            - rDim
+      - diff_split_wrench_gadget:
+          requires:
+            - BRANCH_SUB_HIDDEN
+      - v3-canary2:
+          requires:
+            - diff_split_wrench_gadget
+      - lockclock:
+          requires:
+            - diff_split_wrench_gadget
+      - j_end:
+          requires:
+            - lockclock
+      - bun-build:
+          requires:
+            - j_end
+      - c8b5bd9a38275:
+          requires:
+            - j_end
+      - BAL-PAID-LEN:
+          requires:
+            - c8b5bd9a38275
+      - STG_STAGE_9:
+          requires:
+            - BAL-PAID-LEN
+      - MAX_RATE:
+          requires:
+            - BAL-PAID-LEN
+      - hugo-li-cloud:
+          requires:
+            - MAX_RATE
+      - quebec:
+          requires:
+            - hugo-li-cloud
+      - opsSlot:
+          requires:
+            - hugo-li-cloud
+      - Stage-Model:
+          requires:
+            - opsSlot
+      - STG_DEPLOY_3:
+          requires:
+            - Stage-Model
+      - ryo42:
+          requires:
+            - Stage-Model
+      - acquire_ratio_fails:
+          requires:
+            - ryo42
+      - hotfix-3778:
+          requires:
+            - acquire_ratio_fails
+      - exBlockVar:
+          requires:
+            - acquire_ratio_fails
+      - v17:
+          requires:
+            - exBlockVar
+      - Validate_Tests8:
+          requires:
+            - v17
+      - castles:
+          requires:
+            - v17
+      - SCHEMA_PORT_36:
+          requires:
+            - castles
+      - smoke:
+          requires:
+            - SCHEMA_PORT_36
+      - StandardTagPipeline:
+          requires:
+            - SCHEMA_PORT_36
+      - len-thread-frame-server:
+          requires:
+            - StandardTagPipeline
+      - fix-router-leak:
+          requires:
+            - len-thread-frame-server
+      - iconDidLoad:
+          requires:
+            - len-thread-frame-server
+      - build2042:
+          requires:
+            - iconDidLoad
+      - bug-3947:
+          requires:
+            - build2042
+      - bot4:
+          requires:
+            - build2042
+      - deps-misc-pos-clip:
+          requires:
+            - bot4
+      - q4-rev:
+          requires:
+            - deps-misc-pos-clip
+      - finalInt:
+          requires:
+            - deps-misc-pos-clip
+      - hi-LT-1:
+          requires:
+            - finalInt
+      - INFRA-685:
+          requires:
+            - hi-LT-1
+      - facehardschedule:
+          requires:
+            - hi-LT-1
+      - feature-trait-closed:
+          requires:
+            - facehardschedule
+      - go1-21-vet:
+          requires:
+            - feature-trait-closed
+      - invoice-2000:
+          requires:
+            - feature-trait-closed
+      - sleepASCII:
+          requires:
+            - invoice-2000
+      - blast-off:
+          requires:
+            - sleepASCII
+      - galaxy-node-command:
+          requires:
+            - sleepASCII
+      - PHResource:
+          requires:
+            - galaxy-node-command
+      - RunTests:
+          requires:
+            - PHResource
+      - TAG_LOCALE:
+          requires:
+            - PHResource
+      - Where-LabelObject:
+          requires:
+            - TAG_LOCALE
+      - alpha-v7:
+          requires:
+            - Where-LabelObject
+      - kate_x:
+          requires:
+            - Where-LabelObject
+      - attr_rad:
+          requires:
+            - kate_x
+      - jul4-ship:
+          requires:
+            - attr_rad
+      - ShallowCommentLoader:
+          requires:
+            - attr_rad
+      - FTR-ITEM-REC:
+          requires:
+            - ShallowCommentLoader
+      - intergration:
+          requires:
+            - FTR-ITEM-REC
+      - trackUrl
+      - wadeo
+      - matchAccountShipment
+      - dotnet8-cov:
+          requires:
+            - trackUrl
+            - wadeo
+            - matchAccountShipment
+      - q1-ship:
+          requires:
+            - trackUrl
+            - wadeo
+            - matchAccountShipment
+      - Prepare_Prod6:
+          requires:
+            - trackUrl
+            - wadeo
+            - matchAccountShipment
+      - vega-rev:
+          requires:
+            - trackUrl
+            - wadeo
+            - matchAccountShipment
+      - q1-rev:
+          requires:
+            - trackUrl
+            - wadeo
+            - matchAccountShipment
+      - RUN_DEV:
+          requires:
+            - trackUrl
+            - wadeo
+            - matchAccountShipment
+      - teh-ci:
+          requires:
+            - trackUrl
+            - wadeo
+            - matchAccountShipment
+      - delta:
+          requires:
+            - trackUrl
+            - wadeo
+            - matchAccountShipment
+      - test:
+          requires:
+            - trackUrl
+            - wadeo
+            - matchAccountShipment
+      - v2-alpha2:
+          requires:
+            - trackUrl
+            - wadeo
+            - matchAccountShipment
+      - wip-edge:
+          requires:
+            - trackUrl
+            - wadeo
+            - matchAccountShipment
